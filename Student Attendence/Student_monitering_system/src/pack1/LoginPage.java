@@ -178,8 +178,8 @@ public class LoginPage extends JFrame {
 				if(txtrEnterId.getText().equals("ADMIN")&&passwordField.getText().equals("ADMIN"))
 				{
 				//	JOptionPane.showConfirmDialog(null,"ARE YOU SURE TO WANT TO GO TO ADMIN PAGE","STUDENT MONTER",JOptionPane.YES_NO_CANCEL_OPTION);
-					RegistrationForm registrationform = new RegistrationForm();
-					registrationform.setVisible(true);
+					Admin_Page ap = new Admin_Page();
+					ap.setVisible(true);
 					
 					dispose();
 				}
@@ -187,17 +187,31 @@ public class LoginPage extends JFrame {
 				{
 					JOptionPane.showMessageDialog(null,"you dont have admin permission");
 				}*/
+				else
+				{
 				new Searchid();
 				int idfoundpos = Searchid.searchId(txtrEnterId.getText().trim());
-				
+				if(idfoundpos == -1)
+				{
+					JOptionPane.showMessageDialog(null,"INVALID USER ID");
+				}
+				else {
 				ArrayList<StudentObj> list = DataBase.readDataFromFile();
 				StudentObj obj;
 				obj = list.get(idfoundpos);
 				if(passwordField.getText().equals(obj.getEmail()))
 				{
-					JOptionPane.showMessageDialog(null,"USER LOGGED IN");
+					Home_page obj1 = new Home_page();
+					obj1.setVisible(true);
+					obj1.automatic_update();
+					dispose();
 				}
-				
+				else
+				{
+					JOptionPane.showMessageDialog(null,"WRONG PASSWORD");
+				}
+				}
+				}
 			}
 		});
 		btnNewButton.setBackground(new Color(0, 191, 255));
