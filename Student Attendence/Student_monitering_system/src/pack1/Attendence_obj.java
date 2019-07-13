@@ -4,13 +4,22 @@ import java.io.Serializable;
 
 public class Attendence_obj implements Serializable{
 	private String paper;
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
 	private String oclass;
 	private String vclass;
 	private String present;
 	private String absent;
-	public Attendence_obj(String paper, String oclass, String vclass, String present,String absent)
+	private String id; 
+	
+	public Attendence_obj(String id,String paper, String oclass, String vclass, String present,String absent)
 	{
 		super();
+		this.id =id;
 		this.paper =paper;
 		this.oclass =oclass;
 		this.vclass = vclass;

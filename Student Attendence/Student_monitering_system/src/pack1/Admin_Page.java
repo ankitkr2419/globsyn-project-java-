@@ -25,6 +25,7 @@ import javax.swing.SwingConstants;
 import javax.swing.JTextArea;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.DropMode;
 
 public class Admin_Page extends JFrame {
 
@@ -35,7 +36,8 @@ public class Admin_Page extends JFrame {
 	private JPanel USHEUDELE;
 	private JPanel HOME;
 	private JTable table_1;
-	public String val[] = new String[5];
+	private String val[] = new String[5];
+	private String id;
 	ArrayList<Attendence_obj> userlist;
 
 	/**
@@ -93,11 +95,7 @@ public class Admin_Page extends JFrame {
 		lblNewLabel_1.setBounds(0, 0, 317, 314);
 		HOME.add(lblNewLabel_1);
 		
-		JButton btnNewButton = new JButton("UPDATE");
-		btnNewButton.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 13));
-		btnNewButton.setIcon(new ImageIcon("C:\\Users\\DELL\\Desktop\\projects\\globsyn-project-java-\\Student Attendence\\Student_monitering_system\\images\\pencil-icon.png"));
-		btnNewButton.setBounds(456, 231, 126, 40);
-		HOME.add(btnNewButton);
+	//from here
 		
 		JLabel lblNewLabel_2 = new JLabel("ENTER ID TO UPDATE");
 		lblNewLabel_2.setFont(new Font("Tempus Sans ITC", Font.PLAIN, 17));
@@ -112,8 +110,34 @@ public class Admin_Page extends JFrame {
 		HOME.add(lblHappyTeacherStudent);
 		
 		JTextArea textArea_1 = new JTextArea();
+		textArea_1.setFont(new Font("Monospaced", Font.PLAIN, 18));
 		textArea_1.setBounds(432, 147, 166, 40);
 		HOME.add(textArea_1);
+		
+		JButton btnNewButton = new JButton("ADDRECORD");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				 id =textArea_1.getText().trim();
+				 
+				 Attendence_obj r =new Attendence_obj(id, "","", "", "", "");
+			   	userlist = Database2.readDataFromFile();
+				     userlist.add(r);
+			     Database2.writeDatatoFile(userlist);
+				 
+				 
+				 
+			}
+		});
+		btnNewButton.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 13));
+		btnNewButton.setIcon(new ImageIcon("C:\\Users\\DELL\\Desktop\\projects\\globsyn-project-java-\\Student Attendence\\Student_monitering_system\\images\\pencil-icon.png"));
+		btnNewButton.setBounds(527, 231, 147, 40);
+		HOME.add(btnNewButton);
+		
+		//
+		
+		
+		
+		
 		
 		ATTENDENCE = new JPanel();
 		layeredPane.add(ATTENDENCE, "name_15212934468920");
@@ -156,7 +180,25 @@ public class Admin_Page extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				String paper,oclass,vclass,present,absent;
 				Attendence_obj r;
+				id =textArea_1.getText().trim();
+				ArrayList<Attendence_obj> userlist1;
+				//
+				new SearchAid();
+				int idfoundpos = SearchAid.searchId(id);
+				System.out.println("there id" +idfoundpos);
+				//
+				new duplicateval();
+				ArrayList<Integer[]> list1 = duplicateval.searchId(id);
 				
+				if(idfoundpos == -1)
+				{
+					JOptionPane.showMessageDialog(null,"INVALID USER ID");
+				}
+				else {
+				ArrayList<Attendence_obj> list = Database2.readDataFromFile();
+				Attendence_obj obj;
+			//	obj = list.get(idfoundpos);
+
 				for(int i=0;i<table.getRowCount();i++)
 				{
 					for(int j=0;j<table.getColumnCount();j++)
@@ -168,18 +210,105 @@ public class Admin_Page extends JFrame {
 					vclass = val[2];
 					present = val[3];
 					absent = val[4];
-					r =new Attendence_obj(paper,oclass,vclass,present,absent);
-			   		userlist = Database2.readDataFromFile();
-				      userlist.add(r);
-				      Database2.writeDatatoFile(userlist);
+					for(int r1=0;r1<list1.size();r1++)
+					{
+					Integer[] z =list1.get(i);
+					String c;
+					c =z.toString();
+					int f =Integer.parseInt(c);
+					obj = list.get(f);
+					
+					System.out.println(obj.getPaper());
+					
+					obj.setId(id);
+					obj.setPaper(paper);
+					obj.setVclass(vclass);
+					obj.setOclass(oclass);
+					obj.setPresent(present);
+					obj.setAbsent(absent);
+					
+					if(obj.getPaper().equals(paper))
+					{
+			   		  userlist1 = Database2.readDataFromFile();
+			   		  //userlist1.set(,obj);
+				      userlist1.set(idfoundpos,obj);
+				      Database2.writeDatatoFile(userlist1);
+					}
+					else
+					{
+						userlist1 = Database2.readDataFromFile();
+					      userlist1.add(obj);
+					      Database2.writeDatatoFile(userlist1);
+					}
+					}
 				}
 				JOptionPane.showMessageDialog(null, "UPDATED SUCESSFULLY");
 			}
+				
+			}
+				
+				
 		});
 		btnUpdate.setForeground(new Color(65, 105, 225));
 		btnUpdate.setFont(new Font("Times New Roman", Font.BOLD, 15));
 		btnUpdate.setBounds(270, 276, 97, 25);
 		ATTENDENCE.add(btnUpdate);
+		
+		JButton btnSearch = new JButton("SEARCH");
+		btnSearch.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+		/*		id =textArea_1.getText().trim();
+				new SearchAid();
+				System.out.println(id);
+				int idfoundpos = SearchAid.searchId(id);
+				System.out.println(idfoundpos);
+				if(idfoundpos == -1)
+				{
+					JOptionPane.showMessageDialog(null,"INVALID USER ID");
+				}
+				else {
+				ArrayList<Attendence_obj> list = Database2.readDataFromFile();
+				Attendence_obj obj;
+				obj = list.get(idfoundpos);
+				System.out.println("here paper " + obj.getId() + "  here name" + obj.getPaper());
+					DefaultTableModel model = (DefaultTableModel) table.getModel();
+					model.addRow(new Object[]{
+								obj.getPaper(),
+								obj.getOclass(),
+								obj.getVclass(),
+								obj.getPresent(),
+								obj.getAbsent(),
+							});
+			}
+			}*/
+				new duplicateval();
+				ArrayList<Integer[]> list1 = duplicateval.searchId(id);
+				ArrayList<Attendence_obj> list = Database2.readDataFromFile();
+				Attendence_obj obj;
+				for(int r1=0;r1<list1.size();r1++)
+				{
+				Integer[] z =list1.get(r1);
+				String c;
+				c =z.toString();
+				int f =Integer.parseInt(c);
+				obj = list.get(f);
+				
+				System.out.println("duplicates values"+f);
+				System.out.println(obj.getPaper());
+				DefaultTableModel model = (DefaultTableModel) table.getModel();
+				model.addRow(new Object[]{
+							obj.getPaper(),
+							obj.getOclass(),
+							obj.getVclass(),
+							obj.getPresent(),
+							obj.getAbsent(),
+						});
+				}
+			}//
+		});
+		btnSearch.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 13));
+		btnSearch.setBounds(348, 231, 147, 40);
+		HOME.add(btnSearch);
 		
 		JButton btnAddrow = new JButton("ADDROW");
 		btnAddrow.addActionListener(new ActionListener() {
