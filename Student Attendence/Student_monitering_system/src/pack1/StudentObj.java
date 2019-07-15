@@ -9,8 +9,13 @@ public class StudentObj implements Serializable {
 	private String stream;
 	private String sem;
 	private String dob;
+	private String sex;
+	private String fathername;
+	private String mothername;
+	private String address;
+	private String cname;
 	public StudentObj(String user_id, String name, String email, String stream,String sem
-	 ,String dob)
+	 ,String dob,String sex,String fathername,String mothername,String address,String cname)
 	{
 		super();
 		this.user_id =user_id;
@@ -19,9 +24,44 @@ public class StudentObj implements Serializable {
 		this.stream=stream;
 		this.sem= sem;
 		this.dob =dob;
+		this.sex =sex;
+		this.fathername =fathername;
+		this.mothername =mothername;
+		this.address =address;
+		this.cname =cname;
 	}
 	public String getUser_id() {
 		return user_id;
+	}
+	public String getSex() {
+		return sex;
+	}
+	public void setSex(String sex) {
+		this.sex = sex;
+	}
+	public String getFathername() {
+		return fathername;
+	}
+	public void setFathername(String fathername) {
+		this.fathername = fathername;
+	}
+	public String getMothername() {
+		return mothername;
+	}
+	public void setMothername(String mothername) {
+		this.mothername = mothername;
+	}
+	public String getAddress() {
+		return address;
+	}
+	public void setAddress(String address) {
+		this.address = address;
+	}
+	public String getCname() {
+		return cname;
+	}
+	public void setCname(String cname) {
+		this.cname = cname;
 	}
 	public void setUser_id(String user_id) {
 		this.user_id = user_id;

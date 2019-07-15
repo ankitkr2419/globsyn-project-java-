@@ -18,7 +18,9 @@ import java.awt.Color;
 import javax.swing.UIManager;
 import java.awt.Font;
 import java.awt.event.ActionListener;
+import java.time.Period;
 import java.util.ArrayList;
+import java.util.List;
 import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
@@ -26,6 +28,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.DropMode;
+import java.awt.Toolkit;
 
 public class Admin_Page extends JFrame {
 
@@ -37,8 +40,10 @@ public class Admin_Page extends JFrame {
 	private JPanel HOME;
 	private JTable table_1;
 	private String val[] = new String[5];
+	private String val1[] =new String[6];
 	private String id;
 	ArrayList<Attendence_obj> userlist;
+	private JTable table_2;
 
 	/**
 	 * Launch the application.
@@ -69,8 +74,12 @@ public class Admin_Page extends JFrame {
 	
 
 	public Admin_Page() {
+		setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 13));
+		setTitle("                                                      STUDENT MONITERING SYSTEM");
+		setResizable(false);
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Admin_Page.class.getResource("/pack1/images/clipboard-icon.png")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 750, 450);
+		setBounds(560, 120, 750, 450);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -79,7 +88,7 @@ public class Admin_Page extends JFrame {
 		layeredPane = new JLayeredPane();
 		layeredPane.setBackground(Color.WHITE);
 		layeredPane.setBorder(new MatteBorder(5, 5, 5, 5, (Color) new Color(255, 0, 255)));
-		layeredPane.setBounds(10, 66, 710, 324);
+		layeredPane.setBounds(10, 66, 722, 324);
 		contentPane.add(layeredPane);
 		layeredPane.setLayout(new CardLayout(0, 0));
 		
@@ -91,7 +100,7 @@ public class Admin_Page extends JFrame {
 		JLabel lblNewLabel_1 = new JLabel("");
 		lblNewLabel_1.setBackground(new Color(176, 196, 222));
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_1.setIcon(new ImageIcon("C:\\Users\\DELL\\Desktop\\projects\\globsyn-project-java-\\Student Attendence\\Student_monitering_system\\images\\Webp.net-compress-image.jpg"));
+		lblNewLabel_1.setIcon(new ImageIcon(Admin_Page.class.getResource("/pack1/images/web.png")));
 		lblNewLabel_1.setBounds(0, 0, 317, 314);
 		HOME.add(lblNewLabel_1);
 		
@@ -117,27 +126,26 @@ public class Admin_Page extends JFrame {
 		JButton btnNewButton = new JButton("ADDRECORD");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				
+				dilognew o = new dilognew();
+				o.setVisible(true);
+				for(int i=0; i<=2;i++)
+				{
 				 id =textArea_1.getText().trim();
 				 
 				 Attendence_obj r =new Attendence_obj(id, "","", "", "", "");
 			   	userlist = Database2.readDataFromFile();
-				     userlist.add(r);
+				  userlist.add(r);
 			     Database2.writeDatatoFile(userlist);
-				 
+				}
 				 
 				 
 			}
 		});
 		btnNewButton.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 13));
-		btnNewButton.setIcon(new ImageIcon("C:\\Users\\DELL\\Desktop\\projects\\globsyn-project-java-\\Student Attendence\\Student_monitering_system\\images\\pencil-icon.png"));
-		btnNewButton.setBounds(527, 231, 147, 40);
+		btnNewButton.setIcon(new ImageIcon(Admin_Page.class.getResource("/pack1/images/pencil-icon.png")));
+		btnNewButton.setBounds(507, 231, 167, 40);
 		HOME.add(btnNewButton);
-		
-		//
-		
-		
-		
-		
 		
 		ATTENDENCE = new JPanel();
 		layeredPane.add(ATTENDENCE, "name_15212934468920");
@@ -177,6 +185,7 @@ public class Admin_Page extends JFrame {
 		
 		JButton btnUpdate = new JButton("UPDATE");
 		btnUpdate.addActionListener(new ActionListener() {
+
 			public void actionPerformed(ActionEvent arg0) {
 				String paper,oclass,vclass,present,absent;
 				Attendence_obj r;
@@ -188,7 +197,7 @@ public class Admin_Page extends JFrame {
 				System.out.println("there id" +idfoundpos);
 				//
 				new duplicateval();
-				ArrayList<Integer[]> list1 = duplicateval.searchId(id);
+				List<Integer> list1 = duplicateval.searchId(id);
 				
 				if(idfoundpos == -1)
 				{
@@ -197,8 +206,13 @@ public class Admin_Page extends JFrame {
 				else {
 				ArrayList<Attendence_obj> list = Database2.readDataFromFile();
 				Attendence_obj obj;
-			//	obj = list.get(idfoundpos);
-
+				List<Integer> arr = new ArrayList<>();
+				for(int z1=0;z1<list1.size();z1++)
+				{
+					int f =list1.get(z1);
+					arr.add(f);
+				}
+				int gd=arr.size();
 				for(int i=0;i<table.getRowCount();i++)
 				{
 					for(int j=0;j<table.getColumnCount();j++)
@@ -209,92 +223,71 @@ public class Admin_Page extends JFrame {
 					oclass =val[1];
 					vclass = val[2];
 					present = val[3];
-					absent = val[4];
-					for(int r1=0;r1<list1.size();r1++)
+					int v1=Integer.parseInt(val[1]);
+					int v2= Integer.parseInt(val[3]);
+					int val= v1-v2;
+					absent = Integer.toString(val);
+					
+					if(gd>0)
 					{
-					Integer[] z =list1.get(i);
-					String c;
-					c =z.toString();
-					int f =Integer.parseInt(c);
-					obj = list.get(f);
-					
-					System.out.println(obj.getPaper());
-					
+					int k=0;
+					obj = list.get(list1.get(k));
 					obj.setId(id);
 					obj.setPaper(paper);
 					obj.setVclass(vclass);
 					obj.setOclass(oclass);
 					obj.setPresent(present);
 					obj.setAbsent(absent);
-					
-					if(obj.getPaper().equals(paper))
-					{
-			   		  userlist1 = Database2.readDataFromFile();
-			   		  //userlist1.set(,obj);
-				      userlist1.set(idfoundpos,obj);
-				      Database2.writeDatatoFile(userlist1);
+						  userlist1 = Database2.readDataFromFile();
+						  int z = arr.get(i);
+					      userlist1.set(z,obj);
+					      Database2.writeDatatoFile(userlist1);
+					      k++;
+					      gd--;
 					}
 					else
 					{
-						userlist1 = Database2.readDataFromFile();
-					      userlist1.add(obj);
+						System.out.println("nnnnot in");
+					    	Attendence_obj obj1;
+					    	obj1 =new Attendence_obj(id, paper, oclass, vclass, present, absent);
+						  userlist1 = Database2.readDataFromFile();
+					      userlist1.add(obj1);
 					      Database2.writeDatatoFile(userlist1);
 					}
-					}
-				}
-				JOptionPane.showMessageDialog(null, "UPDATED SUCESSFULLY");
+			}	
+			dilognew ob =new dilognew();
+			ob.setVisible(true);
+			}	
 			}
-				
-			}
-				
-				
 		});
 		btnUpdate.setForeground(new Color(65, 105, 225));
 		btnUpdate.setFont(new Font("Times New Roman", Font.BOLD, 15));
-		btnUpdate.setBounds(270, 276, 97, 25);
+		btnUpdate.setBounds(234, 276, 97, 25);
 		ATTENDENCE.add(btnUpdate);
 		
-		JButton btnSearch = new JButton("SEARCH");
+		JButton btnSearch = new JButton(" SEARCH");
+		btnSearch.setIcon(new ImageIcon(Admin_Page.class.getResource("/pack1/images/Zoom-icon.png")));
 		btnSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-		/*		id =textArea_1.getText().trim();
-				new SearchAid();
-				System.out.println(id);
-				int idfoundpos = SearchAid.searchId(id);
-				System.out.println(idfoundpos);
-				if(idfoundpos == -1)
+				new Searchid();
+				id =textArea_1.getText().trim();
+				int idfoundpos = Searchid.searchId(id);
+				if(idfoundpos==-1)
 				{
-					JOptionPane.showMessageDialog(null,"INVALID USER ID");
+					JOptionPane.showMessageDialog(null, "the user is not registered");
 				}
-				else {
-				ArrayList<Attendence_obj> list = Database2.readDataFromFile();
-				Attendence_obj obj;
-				obj = list.get(idfoundpos);
-				System.out.println("here paper " + obj.getId() + "  here name" + obj.getPaper());
-					DefaultTableModel model = (DefaultTableModel) table.getModel();
-					model.addRow(new Object[]{
-								obj.getPaper(),
-								obj.getOclass(),
-								obj.getVclass(),
-								obj.getPresent(),
-								obj.getAbsent(),
-							});
-			}
-			}*/
-				new duplicateval();
-				ArrayList<Integer[]> list1 = duplicateval.searchId(id);
-				ArrayList<Attendence_obj> list = Database2.readDataFromFile();
-				Attendence_obj obj;
-				for(int r1=0;r1<list1.size();r1++)
+				else
 				{
-				Integer[] z =list1.get(r1);
-				String c;
-				c =z.toString();
-				int f =Integer.parseInt(c);
+				new duplicateval();
+				id =textArea_1.getText().trim();
+				List<Integer> list1 = duplicateval.searchId(id);
+				ArrayList<Attendence_obj> list = Database2.readDataFromFile();
+				Attendence_obj obj;
+				System.out.println("list size "+list1.size());
+				for(int i=0;i<list1.size();i++)
+				{
+				int f = list1.get(i);
 				obj = list.get(f);
-				
-				System.out.println("duplicates values"+f);
-				System.out.println(obj.getPaper());
 				DefaultTableModel model = (DefaultTableModel) table.getModel();
 				model.addRow(new Object[]{
 							obj.getPaper(),
@@ -304,15 +297,75 @@ public class Admin_Page extends JFrame {
 							obj.getAbsent(),
 						});
 				}
+				
+				//
+				new duplicateval2();
+				id =textArea_1.getText().trim();
+				List<Integer> list2 = duplicateval2.searchId(id);
+				ArrayList<Marks_obj> lisst = Databse3.readDataFromFile();
+				Marks_obj obj1;
+				for(int i=0;i<list2.size();i++)
+				{
+				int f = list1.get(i);
+				obj1 = lisst.get(f);
+				DefaultTableModel model = (DefaultTableModel) table_1.getModel();
+				model.addRow(new Object[]{
+							obj1.getPapername(),
+							obj1.getPapercode(),
+							obj1.getTotalmarks(),
+							obj1.getMarksobtain(),
+							obj1.getP_f(),
+						});
+				}	
+		
+			new duplicateval3();
+			id =textArea_1.getText().trim();
+			List<Integer> listn= duplicateval3.searchId(id);
+			System.out.println(list1.size());
+			ArrayList<Routing_obj> listt = DataBase4.readDataFromFile();
+			Routing_obj objn;
+			System.out.println("list size"+listt.size());
+			for(int i=0;i<listn.size();i++)
+			{
+			int f = listn.get(i);
+			objn = listt.get(f);
+			DefaultTableModel model = (DefaultTableModel) table_2.getModel();
+			model.addRow(new Object[]{
+						objn.getPeriod(),
+						objn.getMrout(),
+						objn.getTrout(),
+						objn.getWrout(),
+						objn.getThrout(),
+						objn.getFrout(),
+					});
+			}
+			}
 			}//
 		});
 		btnSearch.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 13));
 		btnSearch.setBounds(348, 231, 147, 40);
 		HOME.add(btnSearch);
 		
+		JButton button_2 = new JButton("");
+		button_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				 New_login nl =new New_login();
+				 dispose();
+				 nl.setVisible(true);
+				 
+			}
+		});
+		button_2.setIcon(new ImageIcon(Admin_Page.class.getResource("/pack1/images/Apps-Dialog-Logout-icon.png")));
+		button_2.setBackground(Color.PINK);
+		button_2.setFont(new Font("Rockwell Condensed", Font.BOLD, 15));
+		button_2.setBounds(666, 13, 34, 40);
+		HOME.add(button_2);
+		
 		JButton btnAddrow = new JButton("ADDROW");
 		btnAddrow.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				//id to be set
+				
 				DefaultTableModel model = (DefaultTableModel) table.getModel();
 				model.addRow(new Object[]{
 					null,
@@ -325,7 +378,7 @@ public class Admin_Page extends JFrame {
 		});
 		btnAddrow.setForeground(new Color(65, 105, 225));
 		btnAddrow.setFont(new Font("Times New Roman", Font.BOLD, 15));
-		btnAddrow.setBounds(379, 276, 114, 25);
+		btnAddrow.setBounds(365, 276, 114, 25);
 		ATTENDENCE.add(btnAddrow);
 		
 		JButton btnLoadData = new JButton("LOAD DATA");
@@ -362,6 +415,113 @@ public class Admin_Page extends JFrame {
 		lblUpdateTheShedule.setFont(new Font("Sitka Text", Font.BOLD, 15));
 		USHEUDELE.add(lblUpdateTheShedule);
 		
+		JScrollPane scrollPane_2 = new JScrollPane();
+		scrollPane_2.setBounds(12, 46, 676, 210);
+		USHEUDELE.add(scrollPane_2);
+		
+		table_2 = new JTable();
+		table_2.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"PERIOD", "MON", "TUE", "WED", "THUS", "FRI"
+			}
+		));
+		table_2.setFont(new Font("Times New Roman", Font.PLAIN, 13));
+		scrollPane_2.setViewportView(table_2);
+		
+		JButton button = new JButton("ADDROW");
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				DefaultTableModel model = (DefaultTableModel) table_2.getModel();
+				model.addRow(new Object[]{
+					null,
+					null,
+					null,
+					null,
+					null,
+					null,
+				});
+			}
+		});
+		button.setForeground(new Color(65, 105, 225));
+		button.setFont(new Font("Times New Roman", Font.BOLD, 15));
+		button.setBounds(379, 269, 111, 25);
+		USHEUDELE.add(button);
+		
+		JButton btnUpdate_1 = new JButton("UPDATE");
+		btnUpdate_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String peroid,mrout,trour,wrout,throut,frout;
+				Routing_obj r;
+				id =textArea_1.getText().trim();
+				ArrayList<Routing_obj> userlist3;
+				//
+				new SearchAid();
+				int idfoundpos = Searchid.searchId(id);
+				//
+				new duplicateval3();
+				List<Integer> list1 = duplicateval3.searchId(id);
+				
+				if(idfoundpos == -1)
+				{
+					JOptionPane.showMessageDialog(null,"INVALID USER ID");
+				}
+				else {
+				ArrayList<Routing_obj> list = DataBase4.readDataFromFile();
+				Routing_obj obj;
+				List<Integer> arr = new ArrayList<>();
+				for(int z1=0;z1<list1.size();z1++)
+				{
+					int f =list1.get(z1);
+					arr.add(f);
+				}
+				int gd=arr.size();
+				for(int i=0;i<table_2.getRowCount();i++)
+				{
+					for(int j=0;j<table_2.getColumnCount();j++)
+					{
+						val1[j] =(String)table_2.getValueAt(i,j);
+					}
+					peroid = val1[0];
+					mrout =val1[1];
+					trour= val1[2];
+					wrout= val1[3];
+					throut =val1[4];
+					frout = val1[5];
+					
+					if(gd!=0)
+					{
+					int k=0;
+					obj = list.get(list1.get(k));
+					obj =new Routing_obj(id,peroid,mrout,trour,wrout,throut,frout);
+						  userlist3 = DataBase4.readDataFromFile();
+						  int z = arr.get(i);
+					      userlist3.set(z,obj);
+					      DataBase4.writeDatatoFile(userlist3);
+					      k++;
+					      gd--;
+					}
+					else
+					{
+					    Routing_obj obj2;
+					    	obj2 =new Routing_obj(id,peroid,mrout,trour,wrout,throut,frout);
+						  userlist3 = DataBase4.readDataFromFile();
+					      userlist3.add(obj2);
+					     DataBase4.writeDatatoFile(userlist3);
+					}	
+			}	
+				dilognew ob =new dilognew();
+				ob.setVisible(true);
+			}	
+			}
+		});
+		btnUpdate_1.setForeground(new Color(65, 105, 225));
+		btnUpdate_1.setFont(new Font("Times New Roman", Font.BOLD, 15));
+		btnUpdate_1.setBounds(232, 269, 111, 25);
+		USHEUDELE.add(btnUpdate_1);
+		
 		JPanel UMARKS = new JPanel();
 		layeredPane.add(UMARKS, "name_20135810357652");
 		UMARKS.setLayout(null);
@@ -390,16 +550,117 @@ public class Admin_Page extends JFrame {
 		lblUpdateTheMarks.setBounds(214, 9, 247, 24);
 		UMARKS.add(lblUpdateTheMarks);
 		
-		JButton button = new JButton("UPDATE");
-		button.setForeground(new Color(65, 105, 225));
-		button.setFont(new Font("Times New Roman", Font.BOLD, 15));
-		button.setBounds(289, 276, 97, 25);
-		UMARKS.add(button);
+		JButton btnAddrows = new JButton("ADDROW");
+		btnAddrows.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				DefaultTableModel model1 = (DefaultTableModel) table_1.getModel();
+				model1.addRow(new Object[]{
+					null,
+					null,
+					null,
+					null,
+					null,
+				});
+			}
+		});
+		btnAddrows.setForeground(new Color(65, 105, 225));
+		btnAddrows.setFont(new Font("Times New Roman", Font.BOLD, 15));
+		btnAddrows.setBounds(364, 278, 111, 25);
+		UMARKS.add(btnAddrows);
+		
+		JButton button_1 = new JButton("UPDATE");
+		button_1.addActionListener(new ActionListener() {
+			private ArrayList<Routing_obj> obj2;
+			public void actionPerformed(ActionEvent e) {
+				String pcode,pname,tmarks,mobtain,p_f;
+				Marks_obj r;
+				id =textArea_1.getText().trim();
+				ArrayList<Marks_obj> userlist2;
+				new SearchAid();
+				int idfoundpos = SearchAid.searchId(id);
+				new duplicateval2();
+				List<Integer> list1 = duplicateval2.searchId(id);
+				
+				if(idfoundpos == -1)
+				{
+					JOptionPane.showMessageDialog(null,"INVALID USER ID");
+				}
+				else {
+				ArrayList<Marks_obj> list = Databse3.readDataFromFile();
+				Marks_obj obj;
+				List<Integer> arr = new ArrayList<>();
+
+				for(int z1=0;z1<list1.size();z1++)
+				{
+					int f =list1.get(z1);
+					arr.add(f);
+				}
+				int gd=arr.size();
+				for(int i=0;i<table_1.getRowCount();i++)
+				{
+					for(int j=0;j<table_1.getColumnCount();j++)
+					{
+						val[j] =(String)table_1.getValueAt(i,j);
+						System.out.println("value of j is " +j);
+					}
+					pcode = val[0];
+					pname =val[1];
+					tmarks = val[2];
+					mobtain = val[3];
+					int v1=Integer.parseInt(val[2]);
+					int v2= Integer.parseInt(val[3]);
+					int d=v1-v2;
+					if(d>40)
+					{
+						p_f ="pass";
+					}
+					else
+					{
+						p_f ="fail";
+					}
+					
+					if(gd!=0)
+					{
+					int k=0;
+					obj = list.get(list1.get(k));
+					obj.setId(id);
+					obj.setPapername(pname);;
+					obj.setPapercode(pcode);;
+					obj.setTotalmarks(tmarks);;
+					obj.setMarksobtain(mobtain);;
+					obj.setP_f(p_f);
+					
+						  userlist2 = Databse3.readDataFromFile();
+						  int z = arr.get(i);
+					      userlist2.set(z,obj);
+					      Databse3.writeDatatoFile(userlist2);
+					      k++;
+					      gd--;
+					}
+					else
+					{
+					    Marks_obj obj2;
+					    obj2 =new Marks_obj(id, pname, pcode, tmarks, mobtain,p_f);
+						  userlist2 = Databse3.readDataFromFile();
+					      userlist2.add(obj2);
+					      Databse3.writeDatatoFile(userlist2);
+					}
+					dilognew ob =new dilognew();
+					ob.setVisible(true);
+			}	
+			}	
+		
+				}
+		});
+		button_1.setForeground(new Color(65, 105, 225));
+		button_1.setFont(new Font("Times New Roman", Font.BOLD, 15));
+		button_1.setBounds(237, 278, 97, 25);
+		UMARKS.add(button_1);
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBorder(new MatteBorder(4, 4, 4, 4, (Color) new Color(255, 255, 0)));
 		panel_1.setBackground(UIManager.getColor("Button.darkShadow"));
-		panel_1.setBounds(0, 0, 732, 53);
+		panel_1.setBounds(0, 0, 744, 53);
 		contentPane.add(panel_1);
 		panel_1.setLayout(null);
 		
@@ -408,6 +669,7 @@ public class Admin_Page extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				RegistrationForm registrationform = new RegistrationForm();
 				registrationform.setVisible(true);
+				dispose();
 			}
 		});
 		btnRegister.setFont(new Font("Rockwell Condensed", Font.BOLD, 15));
@@ -438,6 +700,7 @@ public class Admin_Page extends JFrame {
 		btnUshedule.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				switchpanels(USHEUDELE);
+				
 			}
 		});
 		btnUshedule.setFont(new Font("Rockwell Condensed", Font.BOLD, 15));
@@ -455,8 +718,8 @@ public class Admin_Page extends JFrame {
 		panel_1.add(btnHome);
 		
 		JLabel lblNewLabel = new JLabel("New label");
-		lblNewLabel.setBounds(0, 0, 732, 403);
+		lblNewLabel.setBounds(0, 0, 744, 415);
 		contentPane.add(lblNewLabel);
-		lblNewLabel.setIcon(new ImageIcon("C:\\Users\\DELL\\Desktop\\projects\\globsyn-project-java-\\Student Attendence\\Student_monitering_system\\images\\abstract-1846962_1280.jpg"));
+		lblNewLabel.setIcon(new ImageIcon(Admin_Page.class.getResource("/pack1/images/abstract-1846962_1280.jpg")));
 	}
 }
