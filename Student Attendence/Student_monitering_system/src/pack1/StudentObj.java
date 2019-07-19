@@ -96,7 +96,5 @@ public class StudentObj implements Serializable {
 	public void setDob(String dob) {
 		this.dob = dob;
 	}
-	
-	
-	
+
 }

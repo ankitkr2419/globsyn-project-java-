@@ -321,13 +321,14 @@ public class RegistrationForm extends JFrame {
 			email =textField_2.getText().trim();
 			stream = textField_3.getText().trim();
 			sem=textField_4.getText().trim();
-			sex =textField_8.getText().trim();
-			fname= textField_9.getText().trim();
-			mname = textField_5.getText().trim();
-			add =textField_6.getText().trim();
-			cname =textField_7.getText().trim();
+			sex =textField_5.getText().trim();
+			dob = d_o_b;
+			fname= textField_6.getText().trim();
+			mname = textField_7.getText().trim();
+			add =textField_8.getText().trim();
+			cname =textField_9.getText().trim();
 			
-			r =new StudentObj(id,name,email,stream,sem,d_o_b,sex,fname,mname,add,cname);
+			r =new StudentObj(id,name,email,stream,sem,dob,sex,fname,mname,add,cname);
 			
 			int con=JOptionPane.showConfirmDialog(null, "Are You Sure to Register?");
 		       if(con==JOptionPane.YES_OPTION)
@@ -466,8 +467,9 @@ public class RegistrationForm extends JFrame {
 				mname = textField_7.getText().trim();
 				add =textField_8.getText().trim();
 				cname =textField_9.getText().trim();
+				dob = d_o_b;
 				
-				r =new StudentObj(id,name,email,stream,sem,d_o_b,sex,fname,mname,add,cname);
+				r =new StudentObj(id,name,email,stream,sem,dob,sex,fname,mname,add,cname);
 				
 				int con=JOptionPane.showConfirmDialog(null, "Are You Sure to Update?");
 			       if(con==JOptionPane.YES_OPTION)

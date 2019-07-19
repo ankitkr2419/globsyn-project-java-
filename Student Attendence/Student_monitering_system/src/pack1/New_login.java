@@ -26,6 +26,7 @@ public class New_login extends JFrame {
 	private JPanel contentPane;
 	private JTextField txtrEnterId;
 	private JPasswordField passwordField;
+	private int indicator = 1;
 
 	/**
 	 * Launch the application.
@@ -103,14 +104,33 @@ public class New_login extends JFrame {
 				{
 					JOptionPane.showMessageDialog(null,"Plsese enter empty fields");
 				}
-				if(txtrEnterId.getText().equals("ADMIN")&&passwordField.getText().equals("ADMIN"))
+				if(indicator == 0)
 				{
-				//	JOptionPane.showConfirmDialog(null,"ARE YOU SURE TO WANT TO GO TO ADMIN PAGE","STUDENT MONTER",JOptionPane.YES_NO_CANCEL_OPTION);
-					Admin_Page ap = new Admin_Page();
-					ap.setVisible(true);
-					
-					dispose();
+					new Searchidnew();
+					int idfoundpos = Searchidnew.searchId(txtrEnterId.getText().trim());
+					if(idfoundpos == -1)
+					{
+						JOptionPane.showMessageDialog(null,"INVALID USER ID");
+					}
+					else
+					{
+					ArrayList<ADMINOBJ> list = DATABASE5.readDataFromFile();
+					ADMINOBJ obj;
+					obj = list.get(idfoundpos);
+					if(passwordField.getText().equals(obj.getPass()))
+					{
+						Admin_Page ap = new Admin_Page();
+						ap.setVisible(true);
+						
+						dispose();
+					}
+					else
+					{
+						JOptionPane.showMessageDialog(null,"WRONG PASSWORD");
+					}
+					}
 				}
+				//	JOptionPane.showConfirmDialog(null,"ARE YOU SURE TO WANT TO GO TO ADMIN PAGE","STUDENT MONTER",JOptionPane.YES_NO_CANCEL_OPTION);		
 				else
 				{
 				new Searchid();
@@ -120,14 +140,14 @@ public class New_login extends JFrame {
 					JOptionPane.showMessageDialog(null,"INVALID USER ID");
 				}
 				else {
-				ArrayList<StudentObj> list = DataBase.readDataFromFile();
-				StudentObj obj;
-				obj = list.get(idfoundpos);
-				if(passwordField.getText().equals(obj.getEmail()))
+				ArrayList<StudentObj> list1 = DataBase.readDataFromFile();
+				StudentObj obj1;
+				obj1 = list1.get(idfoundpos);
+				if(passwordField.getText().equals(obj1.getEmail()))
 				{
 					String id =txtrEnterId.getText().trim();
-					Home_page obj1 = new Home_page(id);
-					obj1.setVisible(true);
+					Home_page objn = new Home_page(id);
+					objn.setVisible(true);
 					dispose();
 				}
 				else
@@ -158,6 +178,7 @@ public class New_login extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				txtrEnterId.setText("");
 				passwordField.setText("");
+				indicator =1;
 			}
 		});
 		btnOt.setBackground(new Color(102, 204, 153));
@@ -171,7 +192,8 @@ public class New_login extends JFrame {
 		btnAdmin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				txtrEnterId.setText("ADMIN");
-				 passwordField.setText("ADMIN");
+				 passwordField.setText("");
+				 indicator =0;
 			}
 		});
 		btnAdmin.setBackground(new Color(102, 204, 153));
@@ -202,6 +224,21 @@ public class New_login extends JFrame {
 		passwordField.setBackground(new Color(204, 255, 204));
 		passwordField.setBounds(226, 108, 181, 44);
 		panel.add(passwordField);
+		
+		JButton btnNewButton_1 = new JButton("Admin registration");
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				dispose();
+				Admin_rpage obj= new Admin_rpage();
+				obj.setVisible(true);
+			}
+		});
+		btnNewButton_1.setForeground(Color.MAGENTA);
+		btnNewButton_1.setBackground(Color.PINK);
+		btnNewButton_1.setFont(new Font("Sitka Text", Font.BOLD, 15));
+		btnNewButton_1.setBounds(192, 401, 245, 41);
+		contentPane.add(btnNewButton_1);
+		btnNewButton_1.setIcon(new ImageIcon(New_login.class.getResource("/pack1/images/pencil-icon.png")));
 		
 		JLabel label = new JLabel("");
 		label.setIcon(new ImageIcon(New_login.class.getResource("/pack1/images/ezgif.com-resize (5).gif")));

@@ -58,6 +58,7 @@ public class Home_page extends JFrame {
 	private JTextField textField_2;
 	static int count =1;
 	static int count1=1;
+	private JTextField textField;
 	/**
 	 * Launch the application.
 	 */
@@ -366,11 +367,11 @@ public class Home_page extends JFrame {
 		lblDob.setBounds(24, 0, 86, 23);
 		panel_9.add(lblDob);
 		
-		JTextPane textPane = new JTextPane();
-		textPane.setBackground(new Color(255, 228, 196));
-		textPane.setForeground(new Color(255, 228, 225));
-		textPane.setBounds(12, 29, 118, 35);
-		panel_9.add(textPane);
+		textField = new JTextField();
+		textField.setBackground(new Color(255, 255, 204));
+		textField.setBounds(12, 26, 118, 38);
+		panel_9.add(textField);
+		textField.setColumns(10);
 		
 		JPanel panel_10 = new JPanel();
 		panel_10.setBorder(new MatteBorder(2, 2, 2, 2, (Color) Color.MAGENTA));
@@ -399,11 +400,12 @@ public class Home_page extends JFrame {
 		panel_3.add(panel_11);
 		panel_11.setLayout(null);
 		
-		JTextPane textPane_6 = new JTextPane();
-		textPane_6.setBackground(new Color(255, 228, 196));
-		textPane_6.setEditable(false);
-		textPane_6.setBounds(12, 29, 118, 35);
-		panel_11.add(textPane_6);
+		JTextPane txtpnFname = new JTextPane();
+		txtpnFname.setText("<dynamic>");
+		txtpnFname.setBackground(new Color(255, 228, 196));
+		txtpnFname.setEditable(false);
+		txtpnFname.setBounds(12, 29, 118, 35);
+		panel_11.add(txtpnFname);
 		
 		JLabel lblFname = new JLabel("F-NAME");
 		lblFname.setHorizontalAlignment(SwingConstants.CENTER);
@@ -424,7 +426,7 @@ public class Home_page extends JFrame {
 		textPane_7.setBounds(12, 29, 80, 35);
 		panel_12.add(textPane_7);
 		
-		JLabel lblYear = new JLabel("YEAR");
+		JLabel lblYear = new JLabel("M-NAME");
 		lblYear.setHorizontalAlignment(SwingConstants.CENTER);
 		lblYear.setForeground(new Color(51, 51, 255));
 		lblYear.setFont(new Font("Tahoma", Font.ITALIC, 15));
@@ -769,16 +771,17 @@ public class Home_page extends JFrame {
 		
 		
 		ArrayList<StudentObj> userlist;
-		Searchid o = new Searchid();
+		new Searchid();
 		int pos =Searchid.searchId(id);
 		userlist = DataBase.readDataFromFile();
+		System.out.println("the pos value is "+ userlist.get(pos).getDob());
 		textPane_1.setText(id);
 		txtpnA.setText(userlist.get(pos).getName());
 		textPane_3.setText(userlist.get(pos).getSem());
 		textPane_4.setText(userlist.get(pos).getSex());
-		textPane.setText(userlist.get(pos).getDob());
 		textPane_5.setText(userlist.get(pos).getEmail());
-		textPane_6.setText(userlist.get(pos).getFathername());
+		textField.setText(userlist.get(pos).getDob());
+		txtpnFname.setText(userlist.get(pos).getFathername());
 		textPane_7.setText(userlist.get(pos).getMothername());
 		textPane_8.setText(userlist.get(pos).getAddress());
 		textPane_9.setText(userlist.get(pos).getCname());

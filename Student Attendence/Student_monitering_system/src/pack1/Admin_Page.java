@@ -384,7 +384,7 @@ public class Admin_Page extends JFrame {
 		JButton btnLoadData = new JButton("LOAD DATA");
 		btnLoadData.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				ArrayList<Attendence_obj> list;
+				/*ArrayList<Attendence_obj> list;
 				list = Database2.readDataFromFile();
 				for(Attendence_obj re : list)
 				{
@@ -396,7 +396,25 @@ public class Admin_Page extends JFrame {
 									re.getVclass(),
 									re.getPresent(),
 									re.getAbsent(),
-							});
+							});*/
+				new duplicateval();
+				id =textArea_1.getText().trim();
+				List<Integer> list1 = duplicateval.searchId(id);
+				ArrayList<Attendence_obj> list = Database2.readDataFromFile();
+				Attendence_obj obj;
+				System.out.println("list size "+list1.size());
+				for(int i=0;i<list1.size();i++)
+				{
+				int f = list1.get(i);
+				obj = list.get(f);
+				DefaultTableModel model = (DefaultTableModel) table.getModel();
+				model.addRow(new Object[]{
+							obj.getPaper(),
+							obj.getOclass(),
+							obj.getVclass(),
+							obj.getPresent(),
+							obj.getAbsent(),
+						});
 				}
 			}
 		});
